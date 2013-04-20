@@ -90,7 +90,11 @@ int32 JoystickAnalogueSaturate[MAXJOYAXES];
 // Screen variables
 //
 
+#if MEGAWANG
+int32 ScreenMode = -1; /* means that the game will try to use desktop resolution */
+#else
 int32 ScreenMode = 1;
+#endif
 int32 ScreenWidth = 640;
 int32 ScreenHeight = 480;
 int32 ScreenBPP = 8;
@@ -212,7 +216,11 @@ void CONFIG_SetDefaults( void )
    int32 i,f;
    byte k1,k2;
 
+#if MEGAWANG
+   ScreenMode = -1;
+#else
    ScreenMode = 1;
+#endif
    ScreenWidth = 640;
    ScreenHeight = 480;
    ScreenBPP = 8;

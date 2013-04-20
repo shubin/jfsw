@@ -90,6 +90,10 @@ Things required to make savegames work:
 
 #include "crc32.h"
 
+#if MEGAWANG
+#include "megawang.h"
+#endif
+
 #if DEBUG
 #define BETA 0
 #endif
@@ -820,6 +824,17 @@ void Set_GameMode(void)
     extern long ScreenMode, ScreenWidth, ScreenHeight, ScreenBPP;
     int result;
     char ch;
+        
+#if MEGAWANG
+    if (ScreenMode == -1) {
+        int w, h;
+        Sys_GetScreenSize(&w, &h);
+        ScreenMode = 1;
+        ScreenWidth = w;
+        ScreenHeight = h;
+        ScreenBPP = 32;
+    }
+#endif
     
     //DSPRINTF(ds,"ScreenMode %d, ScreenWidth %d, ScreenHeight %d",ScreenMode, ScreenWidth, ScreenHeight);
     //MONO_PRINT(ds);
@@ -829,11 +844,19 @@ void Set_GameMode(void)
         {
         initprintf("Failure setting video mode %dx%dx%d %s! Attempting safer mode...",
 				ScreenWidth,ScreenHeight,ScreenBPP,ScreenMode?"fullscreen":"windowed");
+
+#if MEGAWANG
+    ScreenMode = 0;
+    ScreenWidth = 800;
+    ScreenHeight = 600;
+    ScreenBPP = 32;
+#else
 	ScreenMode = 0;
 	ScreenWidth = 320;
 	ScreenHeight = 240;
 	ScreenBPP = 8;
-
+#endif
+            
 	result = COVERsetgamemode(ScreenMode, ScreenWidth, ScreenHeight, ScreenBPP);
 	if (result < 0)
 	    {
