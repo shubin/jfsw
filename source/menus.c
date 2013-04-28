@@ -52,6 +52,10 @@ Prepared for public release: 03/28/2005 - Charlie Wiederhold, 3D Realms
 
 #include "colormap.h"
 
+#if MEGAWANG
+#include "megawang.h"
+#endif
+
 //#define PLOCK_VERSION TRUE
 
 
@@ -3856,6 +3860,10 @@ void MNU_DoMenu( CTLType type, PLAYERp pp )
     static long limitmove=0;
     static BOOL select_held=FALSE;
 
+#if MEGAWANG
+    GUI_EnableMenuForCurrentFrame();
+#endif
+        
     resetitem = TRUE;
     
     if (cust_callback != NULL)

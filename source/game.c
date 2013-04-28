@@ -1117,6 +1117,13 @@ InitGame(VOID)
     
     COVERsetbrightness(gs.Brightness,(char *)palette_data);
 
+#if MEGAWANG
+    {
+        extern long ScreenMode, ScreenWidth, ScreenHeight, ScreenBPP;
+        GUI_Init(ScreenWidth, ScreenHeight);
+    }
+#endif
+
     InitFX();	// JBF: do it down here so we get a hold of the window handle
     InitMusic();
         
@@ -3480,6 +3487,10 @@ long app_main(long argc, char *argv[])
 	}
 #endif
 
+#if MEGAWANG
+    addsearchpath(Sys_GetResourceDir());
+#else
+        
 #if defined(__linux) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__)
 	addsearchpath("/usr/share/games/jfsw");
 	addsearchpath("/usr/local/share/games/jfsw");
@@ -3515,6 +3526,8 @@ long app_main(long argc, char *argv[])
 			free(homedir);
 		}
 	}
+        
+#endif
     
     OSD_SetLogFile("sw.log");
     {
